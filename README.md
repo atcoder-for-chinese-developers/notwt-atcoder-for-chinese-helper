@@ -1,5 +1,5 @@
 # notwt-atcoder-for-chinese-helper
-ALMOST finished
+已经无缝支持中文题面了。
 
 AtCoder 中文助手脚本
 
