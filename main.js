@@ -2832,10 +2832,12 @@ function writeSource() {
             else fin += a[i]
         }
         fin = marked(fin)
-        var sco = document.getElementsByClassName('lang-en')[0];
+        var sco = document.getElementsByClassName('lang-ja')[0];
         var sr = sco.childNodes[1].innerHTML;
-        sr = sr.replace('Score', '分数')
-        sr = sr.replace('points', '分')
+        if(sr.indexOf('配点') != -1){
+            sr = sr.replace('配点', '分值')
+            sr = sr.replace('点', '分')
+        }else sr = "";
         cnlang.innerHTML = sr + fin
         var t = document.getElementsByClassName('lang')
         t[0].appendChild(cnlang)
@@ -2853,8 +2855,11 @@ function writeSource() {
 var id = window.location.href
 var pr = id.split('/')[6]
 pr = pr.toUpperCase()
-if(pr[7]=='H'){
+if(pr[pr.length-1]){
     pr=pr.replace("H","Ex");
+}
+if(!isNaN(Number(pr[pr.length-1]))){
+    pr=pr.substr(0,pr.length-1)+String.fromCharCode(Number(pr[pr.length-1])+64)[0];
 }
 if(pr.indexOf("?LANG") != -1){
     pr = pr.substr(0,pr.indexOf("?LANG"));
@@ -2871,13 +2876,45 @@ script.innerText =
     document.getElementsByClassName("lang-en")[0].style = "display:none";\
     document.getElementsByClassName("lang-ja")[0].style = "display:none";\
     document.getElementsByClassName("lang-cn")[0].style = "display:inline";\
+}\
+function showEng() {\
+    document.getElementsByClassName("lang-en")[0].style = "display:inline";\
+    document.getElementsByClassName("lang-ja")[0].style = "display:none";\
+    document.getElementsByClassName("lang-cn")[0].style = "display:none";\
+}\
+function showJpn() {\
+    document.getElementsByClassName("lang-en")[0].style = "display:none";\
+    document.getElementsByClassName("lang-ja")[0].style = "display:inline";\
+    document.getElementsByClassName("lang-cn")[0].style = "display:none";\
 }'
 document.getElementsByTagName('head')[0].appendChild(script);
 
+let isold = document.getElementById("task-statement").childElementCount > 1;
 
-// script.innerText = 'function disap() { var bo = document.getElementById(\'mybo\'); var c = document.getElementsByClassName(\'chn\')[0], d = document.getElementsByClassName(\'chn\')[1]; if (bo.innerHTML == \'隐藏中文题面\') {  c.style = \'display:none\'; d.style = \'display:none\'; bo.innerHTML = \'显示中文题面\' } else { c.style=\'\';  d.style=\'\'; bo.innerHTML = \'隐藏中文题面\'  } }'
-// document.getElementsByTagName('head')[0].appendChild(script);
+if(document.getElementById("task-statement").childNodes[1].getAttribute("id") != null){
+    isold = 1
+    document.getElementById("task-statement").innerHTML = document.getElementById("task-statement").childNodes[1].innerHTML
+}
 
+if(isold){
+    document.getElementById("task-lang-btn").setAttribute("style","display: block;")
+    document.getElementById("task-lang-btn").innerHTML=document.getElementById("task-lang-btn").innerHTML.replace(" / ","")
+    document.getElementById("task-lang-btn").innerHTML=document.getElementById("task-lang-btn").innerHTML.replace("<span data-lang=\"ja\">","<span onclick=\"showJpn()\" data-lang=\"ja\">")
+    document.getElementById("task-lang-btn").innerHTML=document.getElementById("task-lang-btn").innerHTML.replace("<span data-lang=\"en\">","<span style=\"display: none;\" data-lang=\"en\">")
+    let langSp=document.createElement('span'),
+        jaSta=document.getElementById("task-statement").innerHTML,
+        jaSpan=document.createElement("span"),
+        enSpan=document.createElement("span")
+    langSp.setAttribute("class","lang")
+    jaSpan.setAttribute("class","lang-ja")
+    enSpan.setAttribute("class","lang-en")
+    jaSpan.setAttribute("style","display: inline;")
+    jaSpan.innerHTML=jaSta
+    langSp.appendChild(jaSpan)
+    langSp.appendChild(enSpan)
+    document.getElementById("task-statement").innerHTML="";
+    document.getElementById("task-statement").appendChild(langSp);
+}
 
 var fl = document.getElementById('task-lang-btn');
 var cn = document.createElement('span');
