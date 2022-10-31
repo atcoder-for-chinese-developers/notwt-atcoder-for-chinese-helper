@@ -4,8 +4,8 @@
 // @match       https://atcoder.jp/contests/*
 // @grant       none
 // @license     MIT
-// @version     3.1
-// @author      -
+// @version     3.2
+// @author      Acfboy (co: psz2007)
 // @description 在英文题面前显示 AtCoder 中文题面。
 // ==/UserScript==
 
