@@ -4,7 +4,7 @@
 // @match       https://atcoder.jp/contests/*/tasks/*
 // @grant       none
 // @license     MIT
-// @version     3.3
+// @version     3.3.1
 // @author      Acfboy, psz2007
 // @description 在英文题面前显示 AtCoder 中文题面。
 // ==/UserScript==
@@ -14,8 +14,9 @@ function readTextFile(file, ext, callback) {
 	xhr.overrideMimeType("application/" + ext);
 	xhr.open("GET", file, false);
 	xhr.onreadystatechange = function () {
-		if (xhr.readyState === 4)
+		if (xhr.readyState === 4){
 			callback(xhr.responseText, xhr.status);
+		}
 	}
 	xhr.send();
 }
@@ -31,9 +32,9 @@ function getPoints() {
 
 let url = window.location.href, contId = url.split('/')[4], probId = url.split('/')[6], traId = "",
 	traList = [], failFlg = 0, notFoundFlg = 0, src = ""
-readTextFile("https://atcoder-for-chinese-developers.github.io/translations/list.json", "json", function(txt, stat){
+	readTextFile("https://atcoder-for-chinese-developers.github.io/translations/list.json", "json", function(txt, stat){
 	if(stat == 200){
-		traList = JSON.parse(txt)
+		traList = JSON.parse(txt).data
 	}else{
 		alert("翻译列表加载失败")
 		failFlg = 1
